@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Youtube QOLT",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Youtube Quality of Life Tweaks",
   "permissions": [
     "activeTab",
@@ -21,7 +21,8 @@
       ],
       "css": [
         "styles/Highlight.css",
-        "styles/VideoTimeLeft.css"
+        "styles/VideoTimeLeft.css",
+        "styles/PlaylistAutoplayDisabled.css"
       ]
     }
   ],

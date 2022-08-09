@@ -1,0 +1,14 @@
+#playlistAutoplayDisabledCheckbox {
+    height: 14px;
+    width: 14px;
+    margin-right: 5px;
+    accent-color: red;
+    vertical-align: middle;
+    float: left;
+}
+
+#playlistAutoplayDisabledLabel {
+    color: var(--yt-spec-text-secondary);
+    font-size: 1.2rem;
+    cursor: pointer;
+}

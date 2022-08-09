@@ -26,7 +26,9 @@ const injectFeatures = () => {
     }
 
     if (features.PlaylistAutoplayDisabledToggle && /watch\?v=/.test(oldTabUrl)) {
-        PlaylistAutoplayDisabledSetup();
+        setTimeout(() => {
+            PlaylistAutoplayDisabledSetup();
+        }, 2000);
     }
 
     if (features.PlaylistRemovePopupToggle && /&list=/.test(oldTabUrl)) {
