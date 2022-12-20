@@ -44,4 +44,4 @@ const injectFeatures = () => {
     }
 }
 
-window.addEventListener("load", main);
+main();

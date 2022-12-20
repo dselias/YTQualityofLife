@@ -1,0 +1,33 @@
+{
+  "manifest_version": 2,
+  "name": "Youtube QOLT",
+  "version": "1.1.2",
+  "description": "Youtube Quality of Life Tweaks",
+  "permissions": ["activeTab", "storage"],
+  "content_scripts": [
+    {
+      "matches": ["*://www.youtube.com/*"],
+      "js": [
+        "scripts/utils.js",
+        "scripts/content/main.js",
+        "scripts/content/features/Highlight.js",
+        "scripts/content/features/PlaylistAutoplayDisabled.js",
+        "scripts/content/features/PlaylistRemovePopup.js",
+        "scripts/content/features/PlaylistTotalWatchtimeCounter.js",
+        "scripts/content/features/VideoTimeLeft.js"
+      ],
+      "css": [
+        "styles/Highlight.css",
+        "styles/VideoTimeLeft.css",
+        "styles/PlaylistAutoplayDisabled.css"
+      ]
+    }
+  ],
+  "icons": {
+    "128": "images/logo/logo.png"
+  },
+  "browser_action": {
+    "default_icon": "images/logo/logo.png",
+    "default_popup": "popup.html"
+  }
+}
