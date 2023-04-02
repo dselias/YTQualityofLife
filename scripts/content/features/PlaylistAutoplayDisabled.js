@@ -1,29 +1,25 @@
-let playlistAutoplayDisabledInitialized = false;
 let alreadyPaused = false;
 let state;
 
 const PlaylistAutoplayDisabledSetup = () => {
-    alreadyPaused = false;
-    if (playlistAutoplayDisabledInitialized) return;
-    playlistAutoplayDisabledInitialized = true;
-
     console.log("PlaylistAutoplayDisabled Enabled");
-    addAutoplayForChannelHTML();
-    let videoElement = getVideoElement();
+    alreadyPaused = false;
+    const videoElements = document.querySelectorAll("video");
 
-    setInterval(() => {
-        let totalTime = videoElement.duration;
-        let currentTime = videoElement.currentTime;
-        let timeLeft = totalTime - currentTime;
-
-        // console.log(timeLeft);
-
-        if (timeLeft <= 1 && !alreadyPaused && !state) {
-            videoElement.pause();
-            alreadyPaused = true;
-        }
-    }, 300);
+    //addAutoplayForChannelHTML(); TODO fix with new YouTube UI
+    videoElements.forEach(videoElement => videoElement.ontimeupdate = () => checkTimeLeft(videoElement));
 }
+
+const checkTimeLeft = (videoElement) => {
+    let totalTime = videoElement.duration;
+    let currentTime = videoElement.currentTime;
+    let timeLeft = totalTime - currentTime;
+
+    if (timeLeft <= 1.5 && !alreadyPaused && !state) {
+        videoElement.pause();
+        alreadyPaused = true;
+    }
+};
 
 const addAutoplayForChannelHTML = async () => {
     state = await getLocalStorage("PlaylistAutoplayDisabledWhitelistedChannels");

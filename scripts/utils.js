@@ -58,10 +58,10 @@ const setSyncedStorage = (key, value) => {
 }
 
 const consoleLogAllStorage = async () => {
-    console.log("local storage")
-    console.log(await getAllLocalStorage());
-    console.log("synced storage")
-    console.log(await getAllSyncedStorage());
+    console.debug("local storage")
+    console.debug(await getAllLocalStorage());
+    console.debug("synced storage")
+    console.debug(await getAllSyncedStorage());
 }
 
 

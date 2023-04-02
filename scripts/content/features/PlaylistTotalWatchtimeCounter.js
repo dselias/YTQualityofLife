@@ -44,7 +44,7 @@ const getTotalTimeStatusInSeconds = () => {
         const currentVideoTimeStatus = videos[i].querySelector(`span[id^="text"]`);
 
         if (currentVideoTimeStatus == null) {
-            console.log("Error loading Time status. Either the playlist is too large or your internet connection too slow.");
+            console.error("Error loading Time status. Either the playlist is too large or your internet connection too slow.");
         } else {
             const splitTimeStatus = currentVideoTimeStatus.innerHTML.split(":").reverse();
 

@@ -14,7 +14,7 @@ const setUrlChangeListener = () => {
     setInterval(() => {
         if (location.href != oldTabUrl) {
             oldTabUrl = location.href;
-            // console.log("url changed!")
+            //console.debug("url changed!")
             injectFeatures();
         }
     }, 1000);
