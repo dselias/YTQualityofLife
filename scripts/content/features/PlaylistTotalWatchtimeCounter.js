@@ -1,13 +1,17 @@
 let playlistTotalWatchtimeCounterInitialized = false;
+let playlistTitleNode;
 let playlistMenuNode;
+let originalTitle;
+let currentTitle;
 
 const PlaylistTotalWatchtimeCounterSetup = () => {
     setTimeout(() => {
         console.log("PlaylistTotalWatchtimeCounter Updated");
 
         playlistMenuNode = document.querySelectorAll("#container.ytd-playlist-panel-renderer")[1];
+        playlistTitleNode = playlistMenuNode.querySelectorAll("yt-formatted-string.ytd-playlist-panel-renderer")[0];
         setPlaylistTotalWatchtimeCounterObserver();
-        updateSpan();
+        updatePlaylistTitle();
 
         playlistTotalWatchtimeCounterInitialized = true;
     }, 5000);
@@ -16,29 +20,33 @@ const PlaylistTotalWatchtimeCounterSetup = () => {
 const setPlaylistTotalWatchtimeCounterObserver = () => {
     if (playlistTotalWatchtimeCounterInitialized) return;
 
-    //detect when new videos are addded or removed from the playlist to update the totalWatchtime
-    let videoWrapperElement = playlistMenuNode.querySelector("#items");
+    const videoWrapperElement = playlistMenuNode.querySelector("#items");
     new MutationObserver(() => {
-        updateSpan();
+        updatePlaylistTitle();
     }).observe(videoWrapperElement, { childList: true });
+
+    const playlistTitle = playlistTitleNode;
+    new MutationObserver(() => {
+        playlistTitleNode.innerHTML = currentTitle;
+    }).observe(playlistTitle, { attributes: true });
 }
 
-const updateSpan = () => {
-    let totalSeconds = formatSecondsToHHMMSS(getTotalTimeStatusInSeconds() / getVideoElement().playbackRate);
+const updatePlaylistTitle = () => {
+    const totalSeconds = formatSecondsToHHMMSS(getTotalTimeStatusInSeconds() / getVideoElement().playbackRate);
     addToPage(totalSeconds);
 }
 
 const getTotalTimeStatusInSeconds = () => {
-    let videos = playlistMenuNode.getElementsByTagName("ytd-playlist-panel-video-renderer");
+    const videos = playlistMenuNode.getElementsByTagName("ytd-playlist-panel-video-renderer");
     let totalSeconds = 0;
 
     for (let i = 0; i < videos.length; i++) {
-        let currentVideoTimeStatus = videos[i].querySelector(`span[id^="text"]`);
+        const currentVideoTimeStatus = videos[i].querySelector(`span[id^="text"]`);
 
         if (currentVideoTimeStatus == null) {
             console.log("Error loading Time status. Either the playlist is too large or your internet connection too slow.");
         } else {
-            let splitTimeStatus = currentVideoTimeStatus.innerHTML.split(":").reverse();
+            const splitTimeStatus = currentVideoTimeStatus.innerHTML.split(":").reverse();
 
             for (let j = 0; j < splitTimeStatus.length; j++) {
                 if (j == 0) {
@@ -54,19 +62,8 @@ const getTotalTimeStatusInSeconds = () => {
 }
 
 const addToPage = (totalTime) => {
-    let playlistTitleNode = playlistMenuNode.querySelectorAll("yt-formatted-string.ytd-playlist-panel-renderer")[0];
+    if (!originalTitle) originalTitle = playlistTitleNode.innerHTML.trim();
 
-    //check if node already contains the title, or has an <a></a> node that contains the text
-    if (playlistTitleNode.innerHTML.indexOf("<a") != -1) {
-        playlistTitleNode = playlistTitleNode.children[0];
-    }
-
-    //check if title already contains a watchtime span and filter it out.
-    let playlistTitleText = playlistTitleNode.innerHTML;
-    let spanStartIndex = playlistTitleText.indexOf("<");
-    if (spanStartIndex != -1) {
-        playlistTitleText = playlistTitleText.substring(0, spanStartIndex).trim()
-    }
-
-    playlistTitleNode.innerHTML = `${playlistTitleText} <span id="totalPlaylistWatchtime">(${totalTime})</span>`;
+    currentTitle = `${originalTitle} <span id="totalPlaylistWatchtime">(${totalTime})</span>`;
+    playlistTitleNode.innerHTML = currentTitle;
 }
