@@ -9,7 +9,7 @@ const PlaylistTotalWatchtimeCounterSetup = () => {
         console.log("PlaylistTotalWatchtimeCounter Updated");
 
         playlistMenuNode = document.querySelectorAll("#container.ytd-playlist-panel-renderer")[1];
-        playlistTitleNode = playlistMenuNode.querySelectorAll("yt-formatted-string.ytd-playlist-panel-renderer")[0];
+        playlistTitleNode = playlistMenuNode.querySelectorAll("a.yt-simple-endpoint.style-scope.yt-formatted-string")[0] ?? playlistMenuNode.querySelectorAll("yt-formatted-string.ytd-playlist-panel-renderer")[0];
         setPlaylistTotalWatchtimeCounterObserver();
         updatePlaylistTitle();
 
