@@ -110,3 +110,38 @@ const createSVGElement = (color, dStrings) => {
 
     return SVG;
 }
+
+// Wait for an element to appear in a container (runs once).
+const waitForElement = (container, selector, callback) => {
+  const observer = new MutationObserver((mutations, obs) => {
+    const element = container.querySelector(selector);
+    if (element) {
+      obs.disconnect();
+      callback(element);
+    }
+  });
+  observer.observe(container, { childList: true, subtree: true });
+};
+
+// Continuously observe a container for child elements matching the selector.
+const observeForElements = (container, selector, callback) => {
+  // Process any elements that already exist.
+  container.querySelectorAll(selector).forEach(callback);
+
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          // If the node itself matches, update it.
+          if (node.matches && node.matches(selector)) {
+            callback(node);
+          }
+          // Also check its descendants.
+          const matches = node.querySelectorAll ? node.querySelectorAll(selector) : [];
+          matches.forEach(callback);
+        }
+      });
+    });
+  });
+  observer.observe(container, { childList: true, subtree: true });
+};

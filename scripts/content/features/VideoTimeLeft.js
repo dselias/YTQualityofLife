@@ -2,14 +2,16 @@ let timeWrapperElement;
 let timeLeftShown = false;
 
 const VideoTimeLeftSetup = () => {
-    if (document.querySelector(".ytp-time-left") != null) return;
+    waitForElement(document, ".ytp-time-display", (renderer) => {
+        if (document.querySelector(".ytp-time-left") != null) return;
 
-    console.log("VideoTimeLeft Enabled");
-    buildVideoTimeLeftHTML();
-    updateTimeLeft();
-    checkWhichElementToHide();
-    setVideoTimeLeftObserver();
-    setClickListener();
+        console.log("VideoTimeLeft Enabled");
+        buildVideoTimeLeftHTML();
+        updateTimeLeft();
+        checkWhichElementToHide();
+        setVideoTimeLeftObserver();
+        setClickListener();
+    });
 }
 
 const buildVideoTimeLeftHTML = () => {
